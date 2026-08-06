@@ -124,7 +124,21 @@ const ADMIN_QR_IMAGE = "https://api.qrserver.com/v1/create-qr-code/?size=250x250
         let map, marker;
         // ⚠️ अपना WhatsApp नंबर (country code के साथ, बिना '+' के) यहाँ डालें
         const ADMIN_WHATSAPP_NUMBER = "8542821429"; 
+document.getElementById('payment-mode').addEventListener('change', function() {
+    const upiBox = document.getElementById('upi-details');
+    if (this.value === 'Online Payment / UPI') {
+        upiBox.style.display = 'block';
+    } else {
+        upiBox.style.display = 'none';
+    }
+});
 
+function copyUpiId() {
+    const upiId = document.getElementById('upi-id-text').innerText;
+    navigator.clipboard.writeText(upiId);
+    alert("UPI ID कॉपी हो गई: " + upiId);
+}
+        
         function initMap() {
             map = L.map('map').setView([20.5937, 78.9629], 5);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
