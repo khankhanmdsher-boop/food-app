@@ -94,7 +94,12 @@
         <select id="payment-mode">
             <option value="Cash on Delivery">Cash on Delivery (COD)</option>
             <option value="Online Payment / UPI">Online Payment / UPI</option>
-        </select>
+        </select><div id="upi-details" style="margin-top: 15px; padding: 10px; border: 1px solid #ddd; text-align: center; border-radius: 8px; background: #fff;">
+    <p style="margin-bottom: 5px; font-weight: bold;">Scan QR to Pay via PhonePe / GPay / Paytm:</p>
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=khan786khan1001@ibl%26pn=Merchant%26cu=INR" alt="UPI QR Code" style="width: 180px; height: 180px; border-radius: 5px;">
+    <p style="margin-top: 8px; font-size: 14px;"><strong>UPI ID:</strong> khan786khan1001@ibl</p>
+        </div>
+        
 
         <button class="location-btn" onclick="getLocation()">📍 Current Location से सेलेक्ट करें</button>
         
