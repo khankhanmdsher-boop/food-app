@@ -3,239 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Express Delivery App</title>
+    <title>Food & Drinks Order</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
-        body { background: #f4f5f7; padding: 15px; }
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 10px; }
-        h1 { color: #e63946; font-size: 20px; }
-        .cart-count { background: #e63946; color: white; padding: 5px 10px; border-radius: 20px; font-weight: bold; }
-        .section-title { margin: 20px 0 10px; color: #1d3557; border-bottom: 2px solid #e63946; padding-bottom: 5px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
-        .card { background: white; padding: 12px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .price { color: #2a9d8f; font-weight: bold; margin: 5px 0; }
-        button { background: #e63946; color: white; border: none; padding: 8px; width: 100%; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        .checkout-box { margin-top: 30px; background: white; padding: 15px; border-radius: 8px; }
-        input, select { width: 100%; padding: 8px; margin: 8px 0; border: 1px solid #ccc; border-radius: 4px; }
-        
-        .location-btn { background: #457b9d; color: white; margin: 5px 0 10px; padding: 10px; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        
-        .map-wrapper { position: relative; width: 100%; margin-bottom: 10px; }
-        #map { height: 180px; width: 100%; border-radius: 6px; border: 1px solid #ddd; }
-        
-        .gps-icon-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 1000;
-            background: white;
-            border: 2px solid rgba(0,0,0,0.2);
-            border-radius: 50%;
-            width: 38px;
-            height: 38px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 15px; background: #f4f4f9; }
+        .container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .banner { background: linear-gradient(90deg, #ff9900, #ff5500); color: white; padding: 10px; text-align: center; border-radius: 6px; margin: 15px 0; font-weight: bold; font-size: 14px; }
+        .checkout-banner { background: #e6f4ea; color: #137333; border: 1px dashed #137333; padding: 10px; text-align: center; border-radius: 6px; margin-top: 15px; font-weight: bold; font-size: 13px; }
+        .menu-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
+        button { background: #28a745; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; }
+        input, select { width: 100%; padding: 10px; margin-top: 8px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        #map { height: 200px; margin-top: 10px; border-radius: 8px; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Express Store 🛒</h1>
-        <div class="cart-count">Cart: <span id="cart-count">0</span></div>
-    </header>
+<div class="container">
+    <h2>🍔 Quick Food Order</h2>
 
-    <h3 class="section-title">🍔 Prepared Food</h3>
-    <div class="grid">
-        <div class="card">
-            <h4>Cheese Pizza 🍕</h4>
-            <div class="price">₹299</div>
-            <button onclick="addToCart('Pizza', 299)">Add</button>
-        </div>
+    <!-- TOP BANNER (ऑफर और नई जानकारी के लिए) -->
+    <div class="banner">
+        🎉 विशेष ऑफर! आज ही ऑर्डर करें और पाएं 20% की छूट! <br>
+        <span style="font-weight: normal; font-size: 12px;">✨ नई डिशेस और स्पेशल पिज्जा मेन्यू में जुड़ गए हैं!</span>
     </div>
 
-    <h3 class="section-title">🥩 Fresh Meat & Fish</h3>
-    <div class="grid">
-        <div class="card">
-            <h4>Fresh Mutton 🍖</h4>
-            <div class="price">₹750</div>
+    <!-- MENU SECTION -->
+    <div id="menu">
+        <h3>🍕 Menu</h3>
+        <div class="menu-item">
+            <div>
+                <strong>Pizza</strong>
+                <div>₹250</div>
+            </div>
+            <button onclick="addToCart('Pizza', 250)">Add</button>
+        </div>
+        <div class="menu-item">
+            <div>
+                <strong>Mutton 🍖</strong>
+                <div>₹750</div>
+            </div>
             <button onclick="addToCart('Mutton', 750)">Add</button>
         </div>
-        <div class="card">
-            <h4>Fresh Chicken 🍗</h4>
-            <div class="price">₹220</div>
+        <div class="menu-item">
+            <div>
+                <strong>Chicken 🍗</strong>
+                <div>₹220</div>
+            </div>
             <button onclick="addToCart('Chicken', 220)">Add</button>
         </div>
-    </div>
 
-    <h3 class="section-title">🍾 Alcohol (18+ Only)</h3>
-    <div class="grid">
-        <div class="card">
-            <h4>Whiskey 🥃</h4>
-            <div class="price">₹1200</div>
-            <button onclick="addAlcohol('Whiskey', 1200)">Add</button>
+        <h3>🍾 Alcohol (18+ Only)</h3>
+        <div class="menu-item">
+            <div>
+                <strong>Whiskey 🥃</strong>
+                <div>₹1200</div>
+            </div>
+            <button onclick="addToCart('Whiskey', 1200)">Add</button>
         </div>
     </div>
 
-    <div class="checkout-box">
-        <h3>Order Checkout</h3>
-        <p>Total Bill: ₹<span id="total-price">0</span></p>
-        
-        <input type="text" id="user-name" placeholder="आपका नाम">
-        <input type="tel" id="user-phone" placeholder="मोबाइल नंबर (ज़रूरी है)*">
-        <input type="email" id="user-email" placeholder="ईमेल आईडी (वैकल्पिक / Optional)">
-        <input type="text" id="user-address" placeholder="डिलीवरी एड्रेस">
-        
-        <select id="payment-mode">
-            <option value="Cash on Delivery">Cash on Delivery (COD)</option>
-            <option value="Online Payment / UPI">Online Payment / UPI</option>
-        <div id="upi-details" style="display: none; margin-top: 15px; padding: 12px; border: 1px solid #ddd; text-align: center; border-radius: 8px; background: #fff;">
-    <p style="margin-bottom: 5px; font-weight: bold;">Scan QR to Pay via PhonePe / GPay / Paytm:</p>
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=khan786khan1001@ibl%26pn=Merchant%26cu=INR" alt="UPI QR Code" style="width: 180px; height: 180px; border-radius: 5px;">
-    <p style="margin-top: 8px; font-size: 14px;">
-        <strong>UPI ID:</strong> <span id="upi-id-text">khan786khan1001@ibl</span> 
-        <button type="button" onclick="copyUpiId()" style="margin-left: 8px; padding: 3px 8px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">Copy</button>
-    </p>
-        </div>
-            
-        
-        <button class="location-btn" onclick="getLocation()">📍 Current Location से सेलेक्ट करें</button>
-        
-        <div class="map-wrapper">
-            <div id="map"></div>
-            <div class="gps-icon-btn" onclick="getLocation()" title="Fetch Current Location">🎯</div>
-        </div>
+    <hr style="margin: 20px 0;">
 
-        <button onclick="placeOrder()" style="background: #2a9d8f; margin-top: 10px;">Place Order Now</button>
+    <!-- CHECKOUT SECTION -->
+    <h3>🛒 Order Checkout</h3>
+    <p style="font-size: 18px; font-weight: bold;">Total Bill: ₹<span id="total-price">0</span></p>
+
+    <input type="text" id="user-name" placeholder="आपका नाम">
+    <input type="tel" id="user-phone" placeholder="मोबाइल नंबर (ज़रूरी है)*">
+    <input type="email" id="user-email" placeholder="ईमेल आईडी (वैकल्पिक / Optional)">
+    <input type="text" id="user-address" placeholder="डिलीवरी एड्रेस">
+
+    <select id="payment-mode">
+        <option value="Cash on Delivery">Cash on Delivery (COD)</option>
+        <option value="Online Payment / UPI">Online Payment / UPI</option>
+    </select>
+
+    <!-- UPI QR DETAILS (ऑटो-हाइड रहता है) -->
+    <div id="upi-details" style="display: none; margin-top: 15px; padding: 12px; border: 1px solid #ddd; text-align: center; border-radius: 8px; background: #fff;">
+        <p style="margin-bottom: 5px; font-weight: bold;">Scan QR to Pay via PhonePe / GPay / Paytm:</p>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=khan786khan1001@ibl%26pn=Merchant%26cu=INR" alt="UPI QR Code" style="width: 180px; height: 180px; border-radius: 5px;">
+        <p style="margin-top: 8px; font-size: 14px;">
+            <strong>UPI ID:</strong> <span id="upi-id-text">khan786khan1001@ibl</span> 
+            <button type="button" onclick="copyUpiId()" style="margin-left: 8px; padding: 3px 8px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">Copy</button>
+        </p>
     </div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
-        let cart = [];
-        const ADMIN_UPI_ID = "khan786khan1001@ibl";
-const ADMIN_QR_IMAGE = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=khan786khan1001@ibl%26pn=Merchant%26cu=INR";
-        
-        let total = 0;
-        let map, marker;
-        // ⚠️ अपना WhatsApp नंबर (country code के साथ, बिना '+' के) यहाँ डालें
-        const ADMIN_WHATSAPP_NUMBER = "8542821429"; 
-document.getElementById('payment-mode').addEventListener('change', function() {
-    const upiBox = document.getElementById('upi-details');
-    if (this.value === 'Online Payment / UPI') {
-        upiBox.style.display = 'block';
-    } else {
-        upiBox.style.display = 'none';
+    <!-- MAP SECTION -->
+    <button class="location-btn" onclick="getLocation()" style="margin-top: 15px; background: #17a2b8; width: 100%;">📍 Current Location से सेलेक्ट करें</button>
+    <div class="map-wrapper">
+        <div id="map"></div>
+    </div>
+
+    <!-- CHECKOUT BOTTOM BANNER (Place Order से ऊपर) -->
+    <div class="checkout-banner">
+        🔥 10% से 20% तक का डिस्काउंट पाने के लिए ऑनलाइन भुगतान चुनें!
+    </div>
+
+    <!-- PLACE ORDER BUTTON -->
+    <button onclick="placeOrder()" style="background: #2a9d8f; margin-top: 10px; width: 100%; font-size: 16px; padding: 12px;">Place Order Now</button>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    let cart = [];
+    let total = 0;
+    let map, marker;
+
+    const ADMIN_WHATSAPP_NUMBER = "8542821429";
+    const ADMIN_UPI_ID = "khan786khan1001@ibl";
+
+    // कार्ट में आइटम जोड़ना
+    function addToCart(item, price) {
+        cart.push({ item, price });
+        total += price;
+        document.getElementById('total-price').innerText = total;
+        alert(item + " कार्ट में जोड़ा गया!");
     }
-});
 
-function copyUpiId() {
-    const upiId = document.getElementById('upi-id-text').innerText;
-    navigator.clipboard.writeText(upiId);
-    alert("UPI ID कॉपी हो गई: " + upiId);
-}
-        
-        function initMap() {
-            map = L.map('map').setView([20.5937, 78.9629], 5);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap'
-            }).addTo(map);
+    // मैप शुरू करना
+    function initMap() {
+        map = L.map('map').setView([20.5937, 78.9629], 5);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
 
-            marker = L.marker([20.5937, 78.9629], { draggable: true }).addTo(map);
+        marker = L.marker([20.5937, 78.9629], { draggable: true }).addTo(map);
+    }
+    initMap();
 
-            map.on('click', function(e) {
-                setMapLocation(e.latlng.lat, e.latlng.lng);
-            });
-            marker.on('dragend', function(e) {
-                let position = marker.getLatLng();
-                setMapLocation(position.lat, position.lng);
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+                map.setView([lat, lng], 15);
+                marker.setLatLng([lat, lng]);
             });
         }
+    }
 
-        function setMapLocation(lat, lng) {
-            marker.setLatLng([lat, lng]);
-            map.panTo([lat, lng]);
-            document.getElementById('user-address').value = `Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}`;
+    // पेमेंट मोड के हिसाब से QR दिखाना/छुपाना
+    document.getElementById('payment-mode').addEventListener('change', function() {
+        const upiBox = document.getElementById('upi-details');
+        if (this.value === 'Online Payment / UPI') {
+            upiBox.style.display = 'block';
+        } else {
+            upiBox.style.display = 'none';
+        }
+    });
+
+    // UPI ID कॉपी करने का फंक्शन
+    function copyUpiId() {
+        const upiId = document.getElementById('upi-id-text').innerText;
+        navigator.clipboard.writeText(upiId);
+        alert("UPI ID कॉपी हो गई: " + upiId);
+    }
+
+    // WhatsApp ऑर्डर भेजने का फंक्शन
+    function placeOrder() {
+        const name = document.getElementById('user-name').value;
+        const phone = document.getElementById('user-phone').value;
+        const address = document.getElementById('user-address').value;
+        const payment = document.getElementById('payment-mode').value;
+
+        if (!name || !phone) {
+            alert("कृपया नाम और मोबाइल नंबर दर्ज करें!");
+            return;
         }
 
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition((position) => {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    map.setView([lat, lng], 16);
-                    setMapLocation(lat, lng);
-                }, () => {
-                    alert('लोकेशन एक्सेस नहीं मिल पाया।');
-                }, { enableHighAccuracy: true });
-            }
-        }
+        let orderText = `*New Order Details*%0A`;
+        orderText += `*Name:* ${name}%0A`;
+        orderText += `*Phone:* ${phone}%0A`;
+        orderText += `*Address:* ${address}%0A`;
+        orderText += `*Payment Mode:* ${payment}%0A%0A`;
+        orderText += `*Items Ordered:*%0A`;
 
-        window.onload = initMap;
+        cart.forEach(c => {
+            orderText += `- ${c.item}: ₹${c.price}%0A`;
+        });
 
-        function addToCart(name, price) {
-            cart.push({ name, price });
-            total += price;
-            updateUI();
-        }
+        orderText += `%0A*Total Bill:* ₹${total}`;
 
-        function addAlcohol(name, price) {
-            let confirmAge = confirm("Alcohol ऑर्डर करने के लिए आपकी उम्र 18 वर्ष या उससे अधिक होनी चाहिए। क्या आप 18+ हैं?");
-            if (confirmAge) {
-                addToCart(name, price);
-            } else {
-                alert("आप अल्कोहल ऑर्डर नहीं कर सकते।");
-            }
-        }
+        window.open(`https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${orderText}`, '_blank');
+    }
+</script>
 
-        function updateUI() {
-            document.getElementById('cart-count').innerText = cart.length;
-            document.getElementById('total-price').innerText = total;
-        }
-
-        async function placeOrder() {
-            const name = document.getElementById('user-name').value;
-            const phone = document.getElementById('user-phone').value;
-            const email = document.getElementById('user-email').value;
-            const address = document.getElementById('user-address').value;
-            const paymentMode = document.getElementById('payment-mode').value;
-
-            if (!name || !phone || !address || cart.length === 0) {
-                alert("कृपया अपना नाम, मोबाइल नंबर, एड्रेस भरें और कार्ट में आइटम जोड़ें!");
-                return;
-            }
-
-            // 1. Database में Order Save करना
-            const response = await fetch('/api/orders', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, phone, email, address, items: cart, totalAmount: total, paymentMode })
-            });
-
-            const data = await response.json();
-
-            // 2. WhatsApp Notification Message तैयार करना
-            let itemsText = cart.map(item => `- ${item.name}: ₹${item.price}`).join('\n');
-            let waMessage = `🛒 *नया ऑर्डर आया है!*%0A%0A` +
-                `👤 *नाम:* ${name}%0A` +
-                `📞 *फोन:* ${phone}%0A` +
-                `📍 *लोकेशन/एड्रेस:* ${address}%0A` +
-                `💳 *पेमेंट टाइप:* ${paymentMode}%0A%0A` +
-                `📦 *आइटम्स:*%0A${itemsText}%0A%0A` +
-                `💰 *कुल बिल:* ₹${total}`;
-
-            // 3. WhatsApp Redirect करना
-            window.open(`https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${waMessage}`, '_blank');
-
-            alert(data.message);
-            cart = [];
-            total = 0;
-            updateUI();
-        }
-    </script>
 </body>
 </html>
